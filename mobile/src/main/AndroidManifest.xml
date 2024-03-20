@@ -27,6 +27,7 @@
             </intent-filter>
         </activity>
 
+        <!-- 원래 원본에는 없던건데 워치에서 보낸 신호를 모바일앱에서 받기위해 아래 DataLayerListenerService를 추가함. -->
         <service
             android:name=".service.DataLayerListenerService"
             android:exported="true">

@@ -58,6 +58,9 @@ class DataLayerListenerService : WearableListenerService() {
 
         Log.w(TAG, "onMessageReceived ================")
 
+        /**
+         * 워치에서 보낸 json string 을 받아서 로그를 찍는다.
+         */
         when (messageEvent.path) {
             START_ACTIVITY_PATH -> {
                 Log.d(TAG, "전달받은 String : ${String(messageEvent.data)}")

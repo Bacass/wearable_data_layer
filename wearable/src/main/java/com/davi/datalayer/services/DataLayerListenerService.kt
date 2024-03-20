@@ -60,6 +60,11 @@ class DataLayerListenerService : WearableListenerService() {
 
         Log.w(TAG, "onMessageReceived ================")
 
+        /**
+         * 원래는 모바일앱에서 Start Wearable Activity 버튼을 누르면 이곳으로 신호가 오고
+         * 워치의 MainActivity가 실행되는 소스였다.
+         * 모바일앱에서 보낸 json string 을 로그를 찍어서 확인하고, 잘받았습니다 string을 모바일앱으로 보내는 것으로 수정함.
+         */
         when (messageEvent.path) {
             START_ACTIVITY_PATH -> {
                 Log.d(TAG, "전달받은 String : ${String(messageEvent.data)}")

@@ -72,6 +72,10 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * 메인화면 Send json str 버튼 클릭 이벤트처리.
+     * 모바일앱으로 json string 을 보내기 위해 추가했다.
+     */
     private fun onSendJsonStrClicked() {
         lifecycleScope.launch {
             try {
