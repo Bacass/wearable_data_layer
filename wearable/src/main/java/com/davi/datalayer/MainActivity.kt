@@ -15,6 +15,8 @@ import com.google.android.gms.wearable.CapabilityClient
 import com.google.android.gms.wearable.Node
 import com.google.android.gms.wearable.Wearable
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -34,7 +36,8 @@ class MainActivity : ComponentActivity() {
                     events = clientDataViewModel.events,
                     image = clientDataViewModel.image,
                     onQueryOtherDevicesClicked = ::onQueryOtherDevicesClicked,
-                    onQueryMobileCameraClicked = ::onQueryMobileCameraClicked
+                    onQueryMobileCameraClicked = ::onQueryMobileCameraClicked,
+                    onSendJsonStrClicked = ::onSendJsonStrClicked
                 )
             }
         }
@@ -61,6 +64,31 @@ class MainActivity : ComponentActivity() {
                     .filterValues { MOBILE_CAPABILITY in it && CAMERA_CAPABILITY in it }.keys
 
                 displayNodes(nodes)
+            } catch (cancellationException: CancellationException) {
+                throw cancellationException
+            } catch (exception: Exception) {
+                Log.d(TAG, "Querying nodes failed: $exception")
+            }
+        }
+    }
+
+    private fun onSendJsonStrClicked() {
+        lifecycleScope.launch {
+            try {
+                val nodes = capabilityClient
+                    .getCapability(MOBILE_CAPABILITY, CapabilityClient.FILTER_REACHABLE)
+                    .await()
+                    .nodes
+
+                // Send a message to all nodes in parallel
+                nodes.map { node ->
+                    async {
+                        val testJson = "{\"result\":-4,\"gfsSessionId\":\"dd397086b9b822a613751c9912cd42a9bd6be24b59cd7a5c4f690e2a1afbf81858b0f0fb28e0c82a4edcdb0172410812\",\"linkGolfzonIdFlag\":false,\"agreeGolfzonIdFlag\":false,\"golfzonAgreeLink\":null,\"failCnt\":10,\"agreeAge14\":\"Y\",\"marketingPermit\":\"N\",\"dormantYn\":\"N\",\"passwordOver3Month\":\"Y\",\"agreeYn\":\"Y\"}"
+                        messageClient.sendMessage(node.id, START_ACTIVITY_PATH, testJson.toByteArray())
+                            .await()
+                    }
+                }.awaitAll()
+
             } catch (cancellationException: CancellationException) {
                 throw cancellationException
             } catch (exception: Exception) {
@@ -126,5 +154,7 @@ class MainActivity : ComponentActivity() {
         private const val CAMERA_CAPABILITY = "camera"
         private const val WEAR_CAPABILITY = "wear"
         private const val MOBILE_CAPABILITY = "mobile"
+
+        private const val START_ACTIVITY_PATH = "/start-activity"
     }
 }

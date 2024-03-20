@@ -3,6 +3,7 @@ package com.davi.datalayer.presentation.viewmodels
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -33,6 +34,8 @@ class ClientDataViewModel(application: Application) : AndroidViewModel(applicati
     MessageClient.OnMessageReceivedListener,
     CapabilityClient.OnCapabilityChangedListener {
 
+    private val TAG = "ClientDataViewModel"
+
     private val _events = mutableStateListOf<Event>()
 
     /**
@@ -50,6 +53,7 @@ class ClientDataViewModel(application: Application) : AndroidViewModel(applicati
 
 
     override fun onDataChanged(p0: DataEventBuffer) {
+        Log.e(TAG, "onDataChanged ========================")
 // Add all events to the event log
         _events.addAll(
             p0.map { dataEvent ->
@@ -88,6 +92,7 @@ class ClientDataViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     override fun onMessageReceived(p0: MessageEvent) {
+        Log.e(TAG, "onMessageReceived ========================")
         _events.add(
             Event(
                 title = R.string.message,
@@ -97,6 +102,7 @@ class ClientDataViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     override fun onCapabilityChanged(p0: CapabilityInfo) {
+        Log.e(TAG, "onCapabilityChanged ========================")
         _events.add(
             Event(
                 title = R.string.capability_changed,

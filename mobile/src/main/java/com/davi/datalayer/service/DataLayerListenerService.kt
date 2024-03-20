@@ -1,10 +1,9 @@
-package com.davi.datalayer.services
+package com.davi.datalayer.service
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.util.Log
 import com.davi.datalayer.MainActivity
-import com.google.android.gms.wearable.CapabilityClient
 import com.google.android.gms.wearable.DataEventBuffer
 import com.google.android.gms.wearable.MessageEvent
 import com.google.android.gms.wearable.Wearable
@@ -12,7 +11,6 @@ import com.google.android.gms.wearable.WearableListenerService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -67,13 +65,6 @@ class DataLayerListenerService : WearableListenerService() {
 //                    Intent(this, MainActivity::class.java)
 //                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 //                )
-                scope.launch {
-                    messageClient.sendMessage(
-                        messageEvent.sourceNodeId,
-                        START_ACTIVITY_PATH,
-                        "잘받았습니다.".toByteArray()
-                    ).await()
-                }
             }
         }
     }
@@ -90,7 +81,6 @@ class DataLayerListenerService : WearableListenerService() {
         private const val DATA_ITEM_RECEIVED_PATH = "/data-item-received"
         const val COUNT_PATH = "/count"
         const val IMAGE_PATH = "/image"
-        const val RESPONSE = "/response"
         const val IMAGE_KEY = "photo"
     }
 }

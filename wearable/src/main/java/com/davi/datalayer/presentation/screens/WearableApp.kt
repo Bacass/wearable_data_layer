@@ -31,6 +31,7 @@ import androidx.wear.compose.material.Vignette
 import androidx.wear.compose.material.VignettePosition
 import androidx.wear.compose.material.rememberScalingLazyListState
 import com.davi.datalayer.R
+import com.davi.datalayer.presentation.theme.green
 import com.davi.datalayer.presentation.theme.orange
 import com.davi.datalayer.presentation.viewmodels.Event
 
@@ -39,7 +40,8 @@ fun WearableApp(
     events: List<Event>,
     image: Bitmap?,
     onQueryOtherDevicesClicked: () -> Unit,
-    onQueryMobileCameraClicked: () -> Unit
+    onQueryMobileCameraClicked: () -> Unit,
+    onSendJsonStrClicked: () -> Unit
 ) {
     val scalingLazyListState = rememberScalingLazyListState()
 
@@ -82,6 +84,23 @@ fun WearableApp(
                 ) {
                     Text(
                         text = stringResource(id = R.string.query_mobile_camera),
+                        fontSize = 10.sp,
+                        textAlign = TextAlign.Center,
+                        color = androidx.compose.ui.graphics.Color.Black
+                    )
+                }
+            }
+
+            item {
+                Button(
+                    onClick = onSendJsonStrClicked,
+                    colors = ButtonDefaults.buttonColors(containerColor = green),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 15.dp)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.send_json_str),
                         fontSize = 10.sp,
                         textAlign = TextAlign.Center,
                         color = androidx.compose.ui.graphics.Color.Black
@@ -181,7 +200,8 @@ fun MainAppPreviewEvents() {
             eraseColor(Color.WHITE)
         },
         onQueryOtherDevicesClicked = {},
-        onQueryMobileCameraClicked = {}
+        onQueryMobileCameraClicked = {},
+        onSendJsonStrClicked = {},
     )
 }
 
@@ -192,6 +212,7 @@ fun MainAppPreviewEmpty() {
         events = emptyList(),
         image = null,
         onQueryOtherDevicesClicked = {},
-        onQueryMobileCameraClicked = {}
+        onQueryMobileCameraClicked = {},
+        onSendJsonStrClicked = {}
     )
 }
