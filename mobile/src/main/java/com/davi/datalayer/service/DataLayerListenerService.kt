@@ -3,6 +3,7 @@ package com.davi.datalayer.service
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import com.davi.datalayer.MainActivity
 import com.google.android.gms.wearable.DataEventBuffer
 import com.google.android.gms.wearable.MessageEvent
@@ -57,6 +58,7 @@ class DataLayerListenerService : WearableListenerService() {
         super.onMessageReceived(messageEvent)
 
         Log.w(TAG, "onMessageReceived ================")
+        Toast.makeText(this@DataLayerListenerService, "메세지받음", Toast.LENGTH_SHORT).show()
 
         /**
          * 워치에서 보낸 json string 을 받아서 로그를 찍는다.
@@ -64,10 +66,10 @@ class DataLayerListenerService : WearableListenerService() {
         when (messageEvent.path) {
             START_ACTIVITY_PATH -> {
                 Log.d(TAG, "전달받은 String : ${String(messageEvent.data)}")
-//                startActivity(
-//                    Intent(this, MainActivity::class.java)
-//                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                )
+                startActivity(
+                    Intent(this, MainActivity::class.java)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                )
             }
         }
     }
